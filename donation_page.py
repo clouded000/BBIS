@@ -8,11 +8,23 @@ class DonationPage(tk.Frame):
         super().__init__(parent, bg='white')
 
         def add_donation():
+            # Retrieve input values
+            first_name = first_name_entry.get()
+            last_name = last_name_entry.get()
+            sex = sex_combobox.get()
+            birthday = birthday_entry.get()
+            contact = contact_entry.get()
+            email = email_entry.get()
             donor_id = donor_id_entry.get()
             date = date_entry.get()
             blood_type = blood_type_combobox.get()
             component = component_combobox.get()
             volume = volume_entry.get()
+
+            # For now, just print the new fields (optional: store to file/database)
+            print(f"Name: {first_name} {last_name}, Sex: {sex}, Birthday: {birthday}, Contact: {contact}, Email: {email}")
+
+            # Insert donation data to the table
             donation_table.insert('', 'end', values=(donor_id, date, component, volume, "Pending"))
 
         # Navbar
@@ -27,7 +39,6 @@ class DonationPage(tk.Frame):
         logo_label.pack(side='left', padx=(15, 5), pady=10)
 
         tk.Label(nav_bar, text="Sintang Duguan", fg="maroon", font=("Arial", 12, "bold"), bg='white').pack(side='left')
-
         tk.Label(nav_bar, text="Home", font=("Arial", 10), bg='white', cursor="hand2").pack(side='left', padx=25)
         tk.Label(nav_bar, text="Donations", font=("Arial", 10, "underline"), fg='red', bg='white').pack(side='left')
         tk.Label(nav_bar, text="Blood Inventory", font=("Arial", 10), bg='white', cursor="hand2").pack(side='left', padx=25)
@@ -50,6 +61,32 @@ class DonationPage(tk.Frame):
         form_frame = tk.Frame(input_frame, bg='red', padx=10, pady=10)
         form_frame.pack()
 
+        # New personal info fields
+        tk.Label(form_frame, text="First Name:", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
+        first_name_entry = tk.Entry(form_frame, width=30)
+        first_name_entry.pack(pady=2)
+
+        tk.Label(form_frame, text="Last Name:", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
+        last_name_entry = tk.Entry(form_frame, width=30)
+        last_name_entry.pack(pady=2)
+
+        tk.Label(form_frame, text="Sex:", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
+        sex_combobox = ttk.Combobox(form_frame, values=["Male", "Female", "Prefer not to say"], width=27)
+        sex_combobox.pack(pady=2)
+
+        tk.Label(form_frame, text="Birthday (MM/DD/YYYY):", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
+        birthday_entry = tk.Entry(form_frame, width=30)
+        birthday_entry.pack(pady=2)
+
+        tk.Label(form_frame, text="Contact Number:", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
+        contact_entry = tk.Entry(form_frame, width=30)
+        contact_entry.pack(pady=2)
+
+        tk.Label(form_frame, text="Email:", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
+        email_entry = tk.Entry(form_frame, width=30)
+        email_entry.pack(pady=2)
+
+        # Existing donation fields
         tk.Label(form_frame, text="Donor ID:", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
         donor_id_entry = tk.Entry(form_frame, width=30)
         donor_id_entry.pack(pady=2)
@@ -69,7 +106,7 @@ class DonationPage(tk.Frame):
         component_combobox = ttk.Combobox(form_frame, values=["Whole Blood", "Plasma", "Platelets", "RBC", "WBC", "Cryo"], width=27)
         component_combobox.pack(pady=2)
 
-        tk.Label(form_frame, text="Volume:", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
+        tk.Label(form_frame, text="Volume (mL):", bg='red', fg='white', font=("Arial", 9)).pack(anchor='w')
         volume_entry = tk.Entry(form_frame, width=30)
         volume_entry.pack(pady=2)
 
