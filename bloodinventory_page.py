@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from db import get_connection  # ← make sure may db.py ka na may get_connection()
+from datetime import datetime
 
 class InventoryPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -10,7 +12,7 @@ class InventoryPage(tk.Frame):
         nav_bar = tk.Frame(self, bg='white')
         nav_bar.pack(fill='x')
 
-        logo_img = Image.open("C:/Users/Megan Nazareth/Downloads/bbis_logo.png").resize((30, 30))
+        logo_img = Image.open("LogoBBIS.png").resize((30, 30))
         logo_photo = ImageTk.PhotoImage(logo_img)
 
         logo_label = tk.Label(nav_bar, image=logo_photo, bg='white')
@@ -49,7 +51,7 @@ class InventoryPage(tk.Frame):
             combo.set("Select")
 
         create_dropdown("Blood Type", ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
-        create_dropdown("Blood Component Type", ["WHOLE BLOOD", "PLASMA", "PLATELETS", "RBC", "CYRO"])
+        create_dropdown("Blood Component Type", ["Whole Blood", "Plasma", "Platelets", "RBC", "WBC", "Cryo"])
         create_dropdown("Status", ["Available", "Used", "Expired"])
 
         tk.Button(filter_box, text="FILTER", font=("Arial", 9, "bold"), bg='white', fg='red', relief='ridge', width=18).pack(pady=(10, 0))
@@ -59,7 +61,7 @@ class InventoryPage(tk.Frame):
         table_frame.pack(side='right', fill='both', expand=True)
 
         columns = ('INVENTORY ID', 'BLOOD TYPE', 'BLOOD COMPONENT', 'QUANTITY', 'ENTRY DATE', 'EXPIRY DATE', 'STATUS A/U/E')
-        table = ttk.Treeview(table_frame, columns=columns, show='headings', height=15)
+        self.table = ttk.Treeview(table_frame, columns=columns, show='headings', height=15)
 
         style = ttk.Style()
         style.theme_use("default")
@@ -68,7 +70,38 @@ class InventoryPage(tk.Frame):
         style.configure("Treeview.Heading", font=("Arial", 9, "bold"), background='red', foreground='white', relief="ridge")
 
         for col in columns:
-            table.heading(col, text=col)
-            table.column(col, anchor='w', width=125, stretch=False)
+            self.table.heading(col, text=col)
+            self.table.column(col, anchor='w', width=125, stretch=False)
 
-        table.pack(fill='both', expand=True)
+        self.table.pack(fill='both', expand=True)
+
+        # Load data from database
+        self.load_inventory_data()
+
+    def load_inventory_data(self):
+        try:
+            conn = get_connection()
+            cursor = conn.cursor()
+
+            query = """
+                SELECT 
+                    i.inventory_id,
+                    d.blood_type,
+                    c.component_type,
+                    i.quantity_units,
+                    i.entry_time_stamp,
+                    i.expiration_date,
+                    i.status
+                FROM Blood_Inventory i
+                JOIN Donation d ON i.donation_id = d.donation_id
+                JOIN Blood_Component c ON i.component_id = c.component_id
+            """
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+            for row in rows:
+                self.table.insert('', 'end', values=row)
+
+            conn.close()
+        except Exception as e:
+            print("Error loading inventory data:", e)

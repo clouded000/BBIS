@@ -9,7 +9,7 @@ class HomePage(tk.Frame):
         nav_bar = tk.Frame(self, bg='white')
         nav_bar.pack(fill='x')
 
-        logo_img = Image.open("C:/Users/Megan Nazareth/Downloads/bbis_logo.png").resize((30, 30))
+        logo_img = Image.open("C:/Users/Lenovo Thinkpad T460/PycharmProjects/VIVIYS/LogoBBIS.png").resize((30, 30))
         logo_photo = ImageTk.PhotoImage(logo_img)
 
         logo_label = tk.Label(nav_bar, image=logo_photo, bg='white')
