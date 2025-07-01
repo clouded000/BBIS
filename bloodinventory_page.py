@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-from db import get_connection  # ← make sure may db.py ka na may get_connection()
+from db import get_connection
 from datetime import datetime
 
 class InventoryPage(tk.Frame):
@@ -12,7 +12,7 @@ class InventoryPage(tk.Frame):
         nav_bar = tk.Frame(self, bg='white')
         nav_bar.pack(fill='x')
 
-        logo_img = Image.open("LogoBBIS.png").resize((30, 30))
+        logo_img = Image.open("bbis_logo.png").resize((30, 30))
         logo_photo = ImageTk.PhotoImage(logo_img)
 
         logo_label = tk.Label(nav_bar, image=logo_photo, bg='white')
@@ -20,12 +20,14 @@ class InventoryPage(tk.Frame):
         logo_label.pack(side='left', padx=(10, 5), pady=10)
 
         tk.Label(nav_bar, text="Sintang Duguan", fg="maroon", font=("Arial", 12, "bold"), bg='white').pack(side='left')
-        tk.Label(nav_bar, text="Home", font=("Arial", 10), bg='white', cursor="hand2").pack(side='left', padx=25)
-        tk.Label(nav_bar, text="Donations", font=("Arial", 10), bg='white', cursor="hand2").pack(side='left')
-        tk.Label(nav_bar, text="Blood Inventory", font=("Arial", 10, "underline"), fg='red', bg='white').pack(side='left', padx=25)
 
-        nav_bar.winfo_children()[2].bind("<Button-1>", lambda e: controller.show_frame("HomePage"))
-        nav_bar.winfo_children()[3].bind("<Button-1>", lambda e: controller.show_frame("DonationPage"))
+        for txt, page in [("Home", "HomePage"), ("Donations", "DonationPage"),
+                          ("Blood Inventory", "InventoryPage"), ("Donation History", "DonationHistoryPage")]:
+            style = ("Arial", 10, "underline") if txt == "Blood Inventory" else ("Arial", 10)
+            fg = 'red' if txt == "Blood Inventory" else 'black'
+            lbl = tk.Label(nav_bar, text=txt, font=style, fg=fg, bg='white', cursor="hand2")
+            lbl.pack(side='left', padx=20)
+            lbl.bind("<Button-1>", lambda e, p=page: controller.show_frame(p))
 
         tk.Label(nav_bar, text="👤", font=("Arial", 12), bg='white').pack(side='right', padx=20)
         tk.Frame(self, bg='lightgray', height=1).pack(fill='x')

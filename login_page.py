@@ -5,7 +5,7 @@ from db import get_connection
 
 def open_main_app(admin_id):
     from mainnav_page import MainApp
-    app = MainApp(admin_id)  # ✅ Pass admin_id
+    app = MainApp(admin_id)
     app.mainloop()
 
 def login():
@@ -22,7 +22,7 @@ def login():
         conn.close()
 
         if admin:
-            admin_id = admin[0]  # ✅ Get the admin_id
+            admin_id = admin[0]
             root.destroy()
             open_main_app(admin_id)
         else:
@@ -44,7 +44,7 @@ root.resizable(False, False)
 top_frame = tk.Frame(root, bg='white')
 top_frame.pack(anchor='nw', padx=20, pady=10)
 
-logo_image = Image.open("LogoBBIS.png").resize((40, 40))
+logo_image = Image.open("bbis_logo.png").resize((40, 40))
 logo_photo = ImageTk.PhotoImage(logo_image)
 
 logo_label = tk.Label(top_frame, image=logo_photo, bg='white')

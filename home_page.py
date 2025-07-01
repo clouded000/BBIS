@@ -1,3 +1,4 @@
+# ✅ home_page.py
 import tkinter as tk
 from PIL import Image, ImageTk
 
@@ -9,7 +10,7 @@ class HomePage(tk.Frame):
         nav_bar = tk.Frame(self, bg='white')
         nav_bar.pack(fill='x')
 
-        logo_img = Image.open("C:/Users/Lenovo Thinkpad T460/PycharmProjects/VIVIYS/LogoBBIS.png").resize((30, 30))
+        logo_img = Image.open("bbis_logo.png").resize((30, 30))
         logo_photo = ImageTk.PhotoImage(logo_img)
 
         logo_label = tk.Label(nav_bar, image=logo_photo, bg='white')
@@ -22,9 +23,11 @@ class HomePage(tk.Frame):
         tk.Label(nav_bar, text="Home", font=("Arial", 10, "underline"), fg='red', bg='white').pack(side='left', padx=25)
         tk.Label(nav_bar, text="Donations", font=("Arial", 10), bg='white', cursor="hand2").pack(side='left', padx=5)
         tk.Label(nav_bar, text="Blood Inventory", font=("Arial", 10), bg='white', cursor="hand2").pack(side='left', padx=25)
+        tk.Label(nav_bar, text="Donation History", font=("Arial", 10), bg='white', cursor="hand2").pack(side='left', padx=25)
 
         nav_bar.winfo_children()[3].bind("<Button-1>", lambda e: controller.show_frame("DonationPage"))
         nav_bar.winfo_children()[4].bind("<Button-1>", lambda e: controller.show_frame("InventoryPage"))
+        nav_bar.winfo_children()[5].bind("<Button-1>", lambda e: controller.show_frame("DonationHistoryPage"))
 
         tk.Label(nav_bar, text="👤", font=("Arial", 12), bg='white').pack(side='right', padx=20)
         tk.Frame(self, bg='lightgray', height=1).pack(fill='x')

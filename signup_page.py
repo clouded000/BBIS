@@ -20,7 +20,7 @@ root = tk.Tk()
 root.title("Blood Bank Inventory")
 root.geometry("600x450")
 root.configure(bg='white')
-root.resizable(False, False)
+root.resizable(True, True)
 
 # --- Logo + Title ---
 logo_frame = tk.Frame(root, bg='white')
